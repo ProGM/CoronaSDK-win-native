@@ -10,5 +10,5 @@ It's quite raw and buggy, actually, but it can be useful ;)
 Add this two lines on your main.lua:
 
     if "Win" == system.getInfo( "platformName" ) then
-    	require("windows_fix")
+    	require("win_fix")
     end
