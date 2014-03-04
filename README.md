@@ -6,8 +6,7 @@ It's quite raw and buggy, actually, but it can be useful ;)
 
 
 ## HOW TO USE: ##
-
-Add this two lines on your main.lua:
+Download [win_fix.lua](https://raw.github.com/ProGM/CoronaSDK-win-native/master/win_fix.lua) file and add to your project directory, then add this on your main.lua:
 
     if "Win" == system.getInfo( "platformName" ) then
     	require("win_fix")
