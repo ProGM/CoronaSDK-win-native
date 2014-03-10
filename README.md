@@ -13,6 +13,6 @@ Download [win_fix.lua](https://raw.github.com/ProGM/CoronaSDK-win-native/master/
     end
 
 ## TODO LIST ##
- -  Implement all the parameters for the userInput event
  -  Implement copy/paste
  -  Implement symbols different from a-Z 0-9
+ -  Implement cursor
