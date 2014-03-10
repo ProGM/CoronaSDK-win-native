@@ -12,7 +12,7 @@ function native.newTextField( left, top, width, height, listener )
 	}
 	element:setFillColor( 0, 0, 0 )
 	local bkg = display.newRect( left, top, width, height )
-	bkg:setFillColor(0.5, 0.5, 0.5)
+	bkg:setFillColor(0.7, 0.7, 0.7)
 	bkg:setStrokeColor( 0, 0, 0 )
 	bkg.strokeWidth = 1
 	group:insert(bkg)
@@ -33,6 +33,8 @@ function native.newTextField( left, top, width, height, listener )
 			bkg:setFillColor(1, 1, 1)
 			_SELECTED = self
 		else
+			local event = {name="userInput", target=self, phase="ended"}
+			self:dispatchEvent(event)
 			bkg:setFillColor(0.7, 0.7, 0.7)
 			if _SELECTED == self then
 				_SELECTED = nil
@@ -62,14 +64,12 @@ function native.newTextField( left, top, width, height, listener )
 	local old = newMT.__index
 	function newMT.__index(table, key)
 		if key == "text" then
-			print("sto modificando text")
 			return element.text
 		end
 		return old(table, key)
 	end
 	function newMT.__newindex(table, key, value)
 		if key == "text" and value then
-			print(key, value)
 			element.text = value
 			table[key] = nil
 			return false
@@ -101,10 +101,9 @@ local function onKeyEvent( event )
 	if event.isShiftDown then
 		event.keyName = event.keyName:upper()
 	end
-
-	_SELECTED.text = _SELECTED.text .. event.keyName
-
-	local event = {name="userInput", target=_SELECTED, phase="editing", newCharacters = event.keyName}
+	local newText = _SELECTED.text .. event.keyName
+	local event = {name="userInput", target=_SELECTED, phase="editing", newCharacters = event.keyName, oldText = _SELECTED.text, startPosition = #_SELECTED.text, text = newText}
+	_SELECTED.text = newText
 	_SELECTED:dispatchEvent(event)
     return true
 end
@@ -112,8 +111,6 @@ Runtime:addEventListener( "key", onKeyEvent )
 
 local function disableTap(e)
 	if _SELECTED == nil then return false end
-	local event = {name="userInput", target=_SELECTED, phase="ended"}
-	_SELECTED:dispatchEvent(event)
 	_SELECTED:_setSelected(false)
 	return true
 end
